@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" data-version="1">
+<html lang="fr" data-version="2">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -115,7 +115,7 @@ mark { background: hsl(var(--h) 90% 85%); color: inherit; border-radius: 3px; }
     var branche = function (noeuds, profondeur) {
       return '<ul>' + noeuds.map(function (n) {
         if (n.genre === 'texte') return '<li><a href="' + lienVers(n.chemin) + '" data-chemin="' + echapper(n.chemin) + '" title="' + echapper(n.titre) + '">' + echapper(n.titre) + '</a></li>';
-        return '<li><details' + (profondeur < 1 ? ' open' : '') + ' data-chemin="' + echapper(n.chemin) + '"><summary>' + echapper(n.titre) + '</summary>' + branche(n.enfants, profondeur + 1) + '</details></li>';
+        return '<li><details' + (profondeur < 2 ? ' open' : '') + ' data-chemin="' + echapper(n.chemin) + '"><summary>' + echapper(n.titre) + '</summary>' + branche(n.enfants, profondeur + 1) + '</details></li>';
       }).join('') + '</ul>';
     };
     $('arbre').innerHTML = branche(base.arbre, 0);
