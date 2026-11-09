@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr" data-version="1">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self'">
+<meta name="robots" content="noindex, nofollow">
+<title>BaseCoNotes</title>
+<link rel="icon" href="icone.png">
+<style>
+:root { --h: 328; --s: 82%; --fond: #f6f4f5; --carte: #ffffff; --texte: #1f1a1d; --doux: #6b6168; --bord: #e6dfe3; --accent: hsl(var(--h) var(--s) 44%); --accent-doux: hsl(var(--h) 70% 94%); color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --fond: #17141a; --carte: #211d24; --texte: #ece6ea; --doux: #a59ca3; --bord: #352f38; --accent: hsl(var(--h) var(--s) 68%); --accent-doux: hsl(var(--h) 30% 22%); color-scheme: dark; } }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--fond); color: var(--texte); font: 15px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; padding: 24px 16px; min-height: 100vh; }
+main { background: var(--carte); border: 1px solid var(--bord); border-top: 4px solid var(--accent); border-radius: 12px; max-width: 520px; width: 100%; padding: 28px 28px 22px; box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+.tete { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.tete img { width: 44px; height: 44px; }
+.tete span { font-size: 20px; font-weight: 600; }
+h1 { font-size: 17px; margin: 0 0 8px; font-weight: 600; }
+p { margin: 0 0 12px; color: var(--doux); }
+.bouton { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; border-radius: 8px; padding: 9px 18px; font-weight: 600; margin: 4px 0 16px; }
+@media (prefers-color-scheme: dark) { .bouton { background: hsl(var(--h) 45% 40%); } }
+.bouton:focus-visible, a:focus-visible { outline: 3px solid var(--accent-doux); outline-offset: 2px; }
+.aide { background: var(--accent-doux); border-radius: 8px; padding: 12px 14px; margin-top: 4px; }
+.aide p { margin: 0; color: var(--texte); }
+.aide a { color: var(--accent); font-weight: 600; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="tete"><img src="icone.png" alt=""><span>BaseCoNotes</span></div>
+  <div id="bon" hidden>
+    <h1>Ouverture dans BaseCoNotes…</h1>
+    <p>Ton navigateur te demande s’il peut ouvrir BaseCoNotes : accepte. Si tu as refusé ou si rien ne s’est passé :</p>
+    <a id="ouvrir" class="bouton" href="#">Ouvrir dans BaseCoNotes</a>
+    <p>Le lien ouvre l’endroit partagé si tu as accès à sa bibliothèque.</p>
+  </div>
+  <div id="mauvais" hidden>
+    <h1>Ce lien de partage est mal formé</h1>
+    <p>Vérifie qu’il a été copié en entier, ou demande-le de nouveau à la personne qui te l’a envoyé.</p>
+  </div>
+  <div class="aide">
+    <p>Tu n’as pas BaseCoNotes ? Installe-le depuis le <a href="https://arnaudbourdon.github.io/store-outils-epargne/" rel="noreferrer">Store Outils Épargne</a>, puis clique de nouveau sur le lien.</p>
+  </div>
+</main>
+<script>
+// Tout est dans le fragment (#v1/<genre>/<identifiant>), que le navigateur n'envoie jamais au serveur : cette page
+// ne sait rien de ce qu'il désigne. Elle passe le même fragment à l'application installée.
+(function () {
+  var brut = location.hash.slice(1);
+  var fragment = '';
+  try { fragment = decodeURIComponent(brut); } catch (e) { fragment = ''; }
+  fragment = fragment.replace(/^\/+/, '').replace(/\/$/, '');
+  var bon = /^v1\/[cnp]\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(fragment);
+  document.getElementById(bon ? 'bon' : 'mauvais').hidden = false;
+  if (!bon) return;
+  var cible = 'baseconotes://' + fragment.toLowerCase();
+  document.getElementById('ouvrir').href = cible;
+  location.href = cible;
+})();
+</script>
+</body>
+</html>
