@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" data-version="1">
+<html lang="fr" data-version="2">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,7 +54,8 @@ p { margin: 0 0 12px; color: var(--doux); }
   var fragment = '';
   try { fragment = decodeURIComponent(brut); } catch (e) { fragment = ''; }
   fragment = fragment.replace(/^\/+/, '').replace(/\/$/, '');
-  var bon = /^v1\/[cnp]\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(fragment);
+  // Suffixe facultatif « /b/<clé> » : la base d'où vient le lien (RG-SYS-66).
+  var bon = /^v1\/[cnp]\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/b\/[0-9a-f]{16})?$/i.test(fragment);
   document.getElementById(bon ? 'bon' : 'mauvais').hidden = false;
   if (!bon) return;
   var cible = 'baseconotes://' + fragment.toLowerCase();
